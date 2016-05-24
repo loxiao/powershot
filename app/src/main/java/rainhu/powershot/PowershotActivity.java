@@ -18,11 +18,15 @@ public class PowershotActivity extends Activity {
         startserviceBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent serviceIntent = new Intent();
-                serviceIntent.setClass(PowershotActivity.this, PowershotService.class);
-                startService(serviceIntent);
+                startService();
             }
         });
 
+    }
+
+    private void startService(){
+        Intent serviceIntent = new Intent();
+        serviceIntent.setClass(PowershotActivity.this, PowershotService.class);
+        startService(serviceIntent);
     }
 }
