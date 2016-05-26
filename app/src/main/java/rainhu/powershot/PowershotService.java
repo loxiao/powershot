@@ -31,7 +31,6 @@ public class PowershotService extends Service{
         @Override
         public void onSensorChanged(SensorEvent event) {
             final float alpha = 0.8F;
-
             for (int i=0;i < 3;i++){
                 gravity[i] = alpha * gravity[i] + (1- alpha) * event.values[i];
             }
@@ -60,9 +59,11 @@ public class PowershotService extends Service{
         }
     };
 
+    //通过摇一摇触发powershot
     private void handleShakeAction() {
         Toast.makeText(getApplicationContext(),"shake success",Toast.LENGTH_SHORT).show();
 
+        //震动
         long [] pattern = {100,400};
         mVibrator.vibrate(pattern, -1);
 
