@@ -8,10 +8,8 @@ import android.view.View;
 import android.widget.Button;
 
 public class PowershotActivity extends Activity {
-
     private Button startserviceBtn;
     private Button screenshotBtn;
-
     private Context mContext;
 
     @Override
@@ -35,6 +33,7 @@ public class PowershotActivity extends Activity {
 
             }
         });
+
     }
 
     private void startService(){

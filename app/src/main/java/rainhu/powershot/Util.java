@@ -25,7 +25,6 @@ public class Util {
 
         saveScreenshot(mp);
        // Bitmap mp = Bitmap.createBitmap(view.getDrawingCache(),0,0,);
-
         view.setDrawingCacheEnabled(false);
         view.destroyDrawingCache();
        // return mp;
@@ -54,10 +53,12 @@ public class Util {
 
     }
 
-
     public Activity getTopActivity(Context context){
         PackageManager pm = context.getPackageManager();
 
         return null;
     }
+
+
+
 }

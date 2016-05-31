@@ -30,5 +30,5 @@
         android:text="screenshot"
         android:id="@+id/screenshotBtn"
         android:layout_below="@+id/startservice"
-        android:layout_toEndOf="@+id/textView" />
+        android:layout_alignEnd="@+id/startservice" />
 </RelativeLayout>
