@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.AttributeSet;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 
 public class PowershotActivity extends Activity {
@@ -15,6 +17,8 @@ public class PowershotActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        /*
         setContentView(R.layout.activity_powershot);
         mContext = this;
         startserviceBtn = (Button) findViewById(R.id.startservice);
@@ -33,7 +37,12 @@ public class PowershotActivity extends Activity {
 
             }
         });
+        */
 
+        WindowManager wm =  getWindowManager();
+
+       // FlowView flowView = new FlowView(this, );
+       // wm.addView();
     }
 
     private void startService(){
