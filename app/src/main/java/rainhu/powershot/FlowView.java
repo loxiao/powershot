@@ -21,14 +21,12 @@ public class FlowView extends FrameLayout {
         init(context, null);
     }
 
-    public FlowView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-        init(context, attrs);
-    }
-
 
     private void init(Context context, AttributeSet attrs){
         LayoutInflater.from(context).inflate(R.layout.flowview, this);
+
+
+
         startBtn = (Button) findViewById(R.id.startshot);
         startBtn.setOnClickListener(new OnClickListener() {
             @Override
@@ -37,6 +35,8 @@ public class FlowView extends FrameLayout {
             }
         });
         tipView = (TextView) findViewById(R.id.tips);
+
+
     }
 
     public void setTipText(String tips){
