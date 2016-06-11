@@ -3,15 +3,17 @@ package rainhu.powershot;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.IBinder;
 import android.os.Vibrator;
-import android.support.annotation.Nullable;
+import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 /**
@@ -20,6 +22,8 @@ import android.widget.Toast;
 public class PowershotService extends Service{
     private SensorManager mSensorManager;
     private Vibrator mVibrator;
+    private WindowManager mWindowManager;
+    private BallView mBallView;
 
     private final SensorEventListener mShakeListener = new SensorEventListener() {
         private static final float SENSITIVITY = 16;
@@ -78,6 +82,28 @@ public class PowershotService extends Service{
         super.onCreate();
         mSensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         mVibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+
+        mWindowManager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
+        WindowManager.LayoutParams mLayoutParams = new WindowManager.LayoutParams();
+        mLayoutParams.type = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
+        mLayoutParams.gravity = Gravity.TOP | Gravity.LEFT;
+        mLayoutParams.width = 150;
+        mLayoutParams.height = 150;
+        mLayoutParams.x = 50;
+        mLayoutParams.y = 50;
+
+        //mLayoutParams.alpha = 0;
+        mLayoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE |
+                              WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL;
+
+        mBallView = new BallView(getApplicationContext());
+        mBallView.setParams(mLayoutParams);
+
+        mWindowManager.addView(mBallView, mLayoutParams );
+        //mBallView.setTipText("开始截屏");
+        //mBallView.setStartBtnText("点击开始");
+
+
     }
 
     @Override

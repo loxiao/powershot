@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Field;
 
 /**
  * Created by Yu on 2016/5/25.
@@ -59,6 +60,21 @@ public class Util {
         return null;
     }
 
+
+    public static int getStatusBarHeight(Context context){
+            int statusBarHeight = 0;
+            try {
+                Class<?> c = Class.forName("com.android.internal.R$dimen");
+                Object o = c.newInstance();
+                Field field = c.getField("status_bar_height");
+                int x = (Integer) field.get(o);
+                 statusBarHeight = context.getResources().getDimensionPixelSize(x);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        return statusBarHeight;
+    }
 
 
 }
