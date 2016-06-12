@@ -3,6 +3,8 @@ package rainhu.powershot;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PixelFormat;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -87,11 +89,11 @@ public class PowershotService extends Service{
         WindowManager.LayoutParams mLayoutParams = new WindowManager.LayoutParams();
         mLayoutParams.type = WindowManager.LayoutParams.TYPE_TOAST;
         mLayoutParams.gravity = Gravity.TOP | Gravity.LEFT;
-        mLayoutParams.width = 150;
-        mLayoutParams.height = 150;
+        mLayoutParams.width = 200;
+        mLayoutParams.height = 200;
         mLayoutParams.x = 50;
         mLayoutParams.y = 50;
-
+        mLayoutParams.format = PixelFormat.TRANSLUCENT;
 //        WindowManager.LayoutParams params = new WindowManager.LayoutParams(
 //                WindowManager.LayoutParams.WRAP_CONTENT,
 //                WindowManager.LayoutParams.WRAP_CONTENT,
@@ -106,6 +108,7 @@ public class PowershotService extends Service{
 
         mBallView = new BallView(getApplicationContext());
         mBallView.setParams(mLayoutParams);
+        mBallView.setBackgroundColor(Color.TRANSPARENT);
         mWindowManager.addView(mBallView, mLayoutParams );
 
         //mBallView.setTipText("开始截屏");
