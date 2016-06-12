@@ -85,12 +85,20 @@ public class PowershotService extends Service{
 
         mWindowManager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
         WindowManager.LayoutParams mLayoutParams = new WindowManager.LayoutParams();
-        mLayoutParams.type = WindowManager.LayoutParams.TYPE_SYSTEM_ALERT;
+        mLayoutParams.type = WindowManager.LayoutParams.TYPE_TOAST;
         mLayoutParams.gravity = Gravity.TOP | Gravity.LEFT;
         mLayoutParams.width = 150;
         mLayoutParams.height = 150;
         mLayoutParams.x = 50;
         mLayoutParams.y = 50;
+
+//        WindowManager.LayoutParams params = new WindowManager.LayoutParams(
+//                WindowManager.LayoutParams.WRAP_CONTENT,
+//                WindowManager.LayoutParams.WRAP_CONTENT,
+//                WindowManager.LayoutParams.TYPE_TOAST,
+//                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+//                PixelFormat.TRANSLUCENT);
+//
 
         //mLayoutParams.alpha = 0;
         mLayoutParams.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE |
@@ -98,12 +106,10 @@ public class PowershotService extends Service{
 
         mBallView = new BallView(getApplicationContext());
         mBallView.setParams(mLayoutParams);
-
         mWindowManager.addView(mBallView, mLayoutParams );
+
         //mBallView.setTipText("开始截屏");
         //mBallView.setStartBtnText("点击开始");
-
-
     }
 
     @Override

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Environment;
+import android.util.Log;
 import android.view.View;
 
 import java.io.File;
@@ -73,6 +74,7 @@ public class Util {
                 e.printStackTrace();
             }
 
+        CLog.i("StatusBarHeight : " + statusBarHeight);
         return statusBarHeight;
     }
 

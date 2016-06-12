@@ -1,6 +1,7 @@
 package rainhu.powershot;
 
 import android.content.Context;
+import android.net.Uri;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -22,7 +23,17 @@ public class BallView extends FrameLayout {
     private WindowManager.LayoutParams mParams;
     private Context mContext;
 
-   // private
+    //记录点击时候球内部的坐标
+    private float downInviewX;
+    private float downInviewY;
+
+    //记录点击时候相对于屏幕的坐标
+    private float downInScreenX;
+    private float downInScreenY;
+
+    //记录手指up后，相对于屏幕的坐标
+    private float upInScreenX;
+    private float upInScreenY;
 
     public BallView(Context context) {
         super(context);
@@ -44,28 +55,36 @@ public class BallView extends FrameLayout {
 //        });
        // tipView = (TextView) findViewById(R.id.tips);
 
-
     }
-
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
 
-        float downX , downY;
-        float offsetX, offsetY;
         switch (event.getAction()){
             case MotionEvent.ACTION_DOWN:
-                downX = event.getX();
-                downY = event.getY();
+                downInviewX = event.getX();
+                downInviewY = event.getY();
+                downInScreenX = event.getRawX();
+                downInScreenY = event.getRawY() - getStatusBarHeight();
+
+                //这里进行赋值是为了在up的时候判断球的位置有无移动
+                upInScreenX = event.getRawX();
+                upInScreenY =  event.getRawY() - getStatusBarHeight();
                 break;
 
             case MotionEvent.ACTION_MOVE:
-                mParams.x = (int)event.getX();
-                mParams.y = (int)event.getY();
-                mWindowManager.updateViewLayout(this, mParams);
+                upInScreenX = event.getRawX();
+                upInScreenY = event.getRawY() - getStatusBarHeight();
+                updateViewPosition();
                 break;
 
             case MotionEvent.ACTION_UP:
+
+                if(downInScreenX == upInScreenX && downInScreenY  == upInScreenY){
+                  //表示点击球
+                    Toast.makeText(mContext, "ball clicked !", Toast.LENGTH_SHORT).show();
+                }
+
                 break;
             default:
                 break;
@@ -87,6 +106,16 @@ public class BallView extends FrameLayout {
     private void dismiss(){
         this.dismiss();
 
+}
+
+    private int getStatusBarHeight(){
+        return Util.getStatusBarHeight(mContext);
     }
 
+    private void updateViewPosition(){
+        mParams.x = (int)(upInScreenX - downInviewX);
+        mParams.y = (int)(upInScreenY - downInviewY);
+        CLog.i("mParams.x : "+mParams.x+"  mParams.y : "+mParams.y);
+        mWindowManager.updateViewLayout(this, mParams);
+    }
 }
