@@ -40,7 +40,6 @@ public class BallView extends FrameLayout {
         init(context, null);
     }
 
-
     private void init(Context context, AttributeSet attrs){
         LayoutInflater.from(context).inflate(R.layout.ball_view, this);
         mWindowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
@@ -53,7 +52,7 @@ public class BallView extends FrameLayout {
 //
 //            }
 //        });
-       // tipView = (TextView) findViewById(R.id.tips);
+        tipView = (TextView) findViewById(R.id.tips);
 
     }
 

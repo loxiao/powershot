@@ -9,6 +9,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.os.Handler;
 import android.os.IBinder;
 import android.os.Vibrator;
 import android.view.Gravity;
@@ -18,6 +19,9 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 /**
  * Created by hu on 16-5-24.
  */
@@ -26,6 +30,8 @@ public class PowershotService extends Service{
     private Vibrator mVibrator;
     private WindowManager mWindowManager;
     private BallView mBallView;
+    private Timer timer;
+    private Handler mHandler = new Handler();
 
     private final SensorEventListener mShakeListener = new SensorEventListener() {
         private static final float SENSITIVITY = 16;
@@ -111,6 +117,12 @@ public class PowershotService extends Service{
         mBallView.setBackgroundColor(Color.TRANSPARENT);
         mWindowManager.addView(mBallView, mLayoutParams );
 
+
+        if(timer == null){
+            timer = new Timer();
+            timer.scheduleAtFixedRate(new RefreshTask(),0,500);
+        }
+
         //mBallView.setTipText("开始截屏");
         //mBallView.setStartBtnText("点击开始");
     }
@@ -133,5 +145,22 @@ public class PowershotService extends Service{
     public void onDestroy() {
         super.onDestroy();
         mSensorManager.unregisterListener(mShakeListener);
+        mWindowManager.removeView(mBallView);
+    }
+
+    private class RefreshTask extends TimerTask {
+
+        @Override
+        public void run() {
+            mHandler.post(new Runnable() {
+                @Override
+                public void run() {
+                    updateBallViewData();
+                }
+            });
+        }
+    }
+    private void updateBallViewData(){
+        mBallView.setTipText(Util.getUsedMemPercent(getApplicationContext()));
     }
 }

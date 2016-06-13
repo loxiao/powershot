@@ -17,7 +17,7 @@ public class PowershotReceiver extends BroadcastReceiver {
         if(action.equals(Intent.ACTION_BOOT_COMPLETED)){
             Intent serviceIntent = new Intent();
             serviceIntent.setClass(context, PowershotService.class);
-            context.startService(serviceIntent);
+            //context.startService(serviceIntent);
         }
     }
 }
