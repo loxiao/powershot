@@ -54,8 +54,16 @@ public class PowershotService extends Service{
                 average += Math.abs(x) + Math.abs(y) + Math.abs(z);
                 fill++;
             }else{
-                CLog.i("average:"+average);
-                CLog.i("average / BUFFER:"+(average / BUFFER));
+               // CLog.i("average:"+average);
+               //
+                //
+                //
+                //
+                //
+                //
+                //
+                //
+                // CLog.i("average / BUFFER:"+(average / BUFFER));
                 if (average / BUFFER >= SENSITIVITY) {
                     handleShakeAction();
                 }

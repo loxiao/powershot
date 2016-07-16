@@ -107,7 +107,7 @@ public class Util {
                 e.printStackTrace();
             }
 
-        CLog.i("StatusBarHeight : " + statusBarHeight);
+       // CLog.i("StatusBarHeight : " + statusBarHeight);
         return statusBarHeight;
     }
 
@@ -129,6 +129,14 @@ public class Util {
         int percent = (int) ((totalMem-availMem) / (float)totalMem * 100) ;
         return percent+"%";
     }
+
+    public static long getAvailMem(Context context){
+        ActivityManager.MemoryInfo mi = new ActivityManager.MemoryInfo();
+        getActivityManager(context).getMemoryInfo(mi);
+
+        return mi.availMem;
+    }
+
 
 
 

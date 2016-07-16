@@ -1,8 +1,10 @@
 package rainhu.powershot;
 
+import android.app.ActivityManager;
 import android.content.Context;
 import android.net.Uri;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -12,6 +14,12 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.jaredrummler.android.processes.AndroidProcesses;
+import com.jaredrummler.android.processes.models.AndroidAppProcess;
+
+import java.text.DecimalFormat;
+import java.util.List;
+
 /**
  * Created by Yu on 2016/5/25.
  */
@@ -20,6 +28,7 @@ public class BallView extends FrameLayout {
     private TextView tipView;
 
     private WindowManager mWindowManager;
+    private ActivityManager mActivityManager;
     private WindowManager.LayoutParams mParams;
     private Context mContext;
 
@@ -43,6 +52,8 @@ public class BallView extends FrameLayout {
     private void init(Context context, AttributeSet attrs){
         LayoutInflater.from(context).inflate(R.layout.ball_view, this);
         mWindowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        mActivityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+
         mContext = context;
 
 //        startBtn = (Button) findViewById(R.id.startshot);
@@ -81,7 +92,7 @@ public class BallView extends FrameLayout {
 
                 if(downInScreenX == upInScreenX && downInScreenY  == upInScreenY){
                   //表示点击球
-                    Toast.makeText(mContext, "ball clicked !", Toast.LENGTH_SHORT).show();
+                    onBallClicked();
                 }
 
                 break;
@@ -92,6 +103,35 @@ public class BallView extends FrameLayout {
         return true;
     }
 
+    private void onBallClicked() {
+
+       // List<ActivityManager.RunningAppProcessInfo> list =  mActivityManager.getRunningAppProcesses();
+
+        long beforeClearAvailMem = Util.getAvailMem(mContext);
+        List<AndroidAppProcess> processes = AndroidProcesses.getRunningAppProcesses();
+
+
+        if(processes == null) {
+            Toast.makeText(mContext, "no process need to clear !", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        for(int i=0; i< processes.size();i++){
+            //ActivityManager.RunningAppProcessInfo appProcessInfo = processes.get(i);
+            AndroidAppProcess process = processes.get(i);
+            if(process.getPackageName().contains("powershot"))
+                continue;
+            mActivityManager.killBackgroundProcesses(process.getPackageName());
+
+        }
+
+        long afterClearAvailMem = Util.getAvailMem(mContext);
+        DecimalFormat df = new DecimalFormat("0.00");
+        float freedMemFloat =  (float)(afterClearAvailMem-beforeClearAvailMem)/1024/1024;
+        String freedMem =  freedMemFloat >= 0 ?  df.format (freedMemFloat)  : 0+"";
+
+        Toast.makeText(mContext, "clear finished ! "+ freedMem +" MB free ", Toast.LENGTH_SHORT).show();
+    }
 
 
     public void setTipText(String tips){
@@ -100,7 +140,6 @@ public class BallView extends FrameLayout {
     public void setParams(WindowManager.LayoutParams p){
         mParams = p;
     }
-
 
     private void dismiss(){
         this.dismiss();
@@ -114,7 +153,7 @@ public class BallView extends FrameLayout {
     private void updateViewPosition(){
         mParams.x = (int)(upInScreenX - downInviewX);
         mParams.y = (int)(upInScreenY - downInviewY);
-        CLog.i("mParams.x : "+mParams.x+"  mParams.y : "+mParams.y);
+        //CLog.i("mParams.x : "+mParams.x+"  mParams.y : "+mParams.y);
         mWindowManager.updateViewLayout(this, mParams);
     }
 }
